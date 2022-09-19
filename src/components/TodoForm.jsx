@@ -1,27 +1,35 @@
-import React from "react";
-import { addTodos,getTodos } from "../features/api";
-import { useState } from "react";
-import { Input, InputGroup, Button, InputRightAddon } from "@chakra-ui/react";
+import React from 'react'
+import { addTodos, getTodos } from '../features/api'
+import { useState } from 'react'
+import {
+  Input,
+  InputGroup,
+  Button,
+  InputRightAddon,
+  FormControl,
+  FormHelperText,
+} from '@chakra-ui/react'
 function TodoForm({ setTodos, todos }) {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('')
+  const [error, setError] = useState(false)
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    let data = new FormData(e.target);
-    data = data.get("content");
-    await addTodos({ content: data, isCompleted: false });
-    getTodos().then((data) => setTodos(data));
+    e.preventDefault()
+    let data = new FormData(e.target)
+    data = data.get('content')
     // setTodos([...todos, { content: data, isCompleted: false,id : todos.length + 1 }]);
-    setContent("");
-  };
+    await addTodos({ content: data, isCompleted: false })
+    getTodos().then((data) => setTodos(data))
+    setContent('')
+  }
   return (
     <form onSubmit={handleSubmit}>
       <InputGroup>
         <Input
           type="text"
           name="content"
-          onChange={(e) => setContent(e.target.value)}
-          minLength={3}
+          onInput={(e) => setContent(e.target.value)}
           value={content}
+          minLength="3"
           paddingInline="10px"
           width="100%"
         />
@@ -32,7 +40,7 @@ function TodoForm({ setTodos, todos }) {
         </InputRightAddon>
       </InputGroup>
     </form>
-  );
+  )
 }
 
-export default TodoForm;
+export default TodoForm

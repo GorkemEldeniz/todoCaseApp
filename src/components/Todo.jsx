@@ -1,80 +1,81 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { deleteTodos, getTodos, updateTodo } from "../features/api";
-import Header from "./Header";
-import Loader from "./Loader";
-import LogoutForm from "./LogoutForm";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import React from 'react'
+import { useEffect, useState } from 'react'
+import { deleteTodos, getTodos, updateTodo } from '../features/api'
+import Header from './Header'
+import Loader from './Loader'
+import LogoutForm from './LogoutForm'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import Theme from './Theme'
 import {
   Input,
   InputGroup,
   InputRightAddon,
   Button,
   Checkbox,
-} from "@chakra-ui/react";
-import TodoForm from "./TodoForm";
-import { animate } from "framer-motion";
+} from '@chakra-ui/react'
+import TodoForm from './TodoForm'
 function Todo() {
-  const [todos, setTodos] = useState([]);
-  const name = JSON.parse(localStorage.getItem("username"));
-  const [loading, setLoading] = useState(true);
-  const [editContent, setEditContent] = useState("");
-  const [parent] = useAutoAnimate();
+  const [todos, setTodos] = useState([])
+  const name = JSON.parse(localStorage.getItem('username'))
+  const [loading, setLoading] = useState(true)
+  const [editContent, setEditContent] = useState('')
+  const [parent] = useAutoAnimate({ duration: 200 })
   useEffect(() => {
     getTodos()
       .then((data) => setTodos(data))
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => setLoading(false))
+  }, [])
 
   const handleDelete = (id) => {
-    setTodos((pre) => pre.filter((el) => el.id != id));
-    deleteTodos(id);
-  };
+    setTodos((pre) => pre.filter((el) => el.id != id))
+    deleteTodos(id)
+  }
 
   const handleChange = (id, e) => {
     setTodos((pre) =>
       pre.map((el) => {
         if (el.id == id) {
-          return { ...el, isCompleted: e.target.checked };
+          return { ...el, isCompleted: e.target.checked }
         }
-        return el;
+        return el
       })
-    );
-    updateTodo({ isCompleted: e.target.checked }, id);
-  };
+    )
+    updateTodo({ isCompleted: e.target.checked }, id)
+  }
 
   const handleEdit = (id, e) => {
     setTodos((pre) =>
       pre.map((el) => {
         if (el.id == id) {
-          return { ...el, content: e.target.value };
+          return { ...el, content: e.target.value }
         }
-        return el;
+        return el
       })
-    );
-  };
+    )
+  }
   const focusEdit = (e) => {
-    let inputElement;
-    if (e.target.tagName == "I") {
-      inputElement = e.target.parentElement.parentElement.previousSibling;
+    let inputElement
+    if (e.target.tagName == 'I') {
+      inputElement = e.target.parentElement.parentElement.previousSibling
     } else {
-      inputElement = e.target.parentElement.previousSibling;
+      inputElement = e.target.parentElement.previousSibling
     }
-    inputElement.focus();
-    inputElement.readOnly = false;
-  };
+    inputElement.focus()
+    inputElement.readOnly = false
+  }
 
   const handleInput = (e, id) => {
-    if (e.key == "Enter") {
-      e.target.readOnly = true;
+    if (e.key == 'Enter') {
+      e.target.readOnly = true
       //prevent many request to API by keydown event!!
-      updateTodo({ content: e.target.value }, id);
+      updateTodo({ content: e.target.value }, id)
     }
-  };
+  }
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader />
   return (
     <div className="todo">
+      <Theme />
       <Header name={name} />
       <LogoutForm />
       <TodoForm setTodos={setTodos} todos={todos} />
@@ -88,7 +89,7 @@ function Todo() {
               onKeyDown={(e) => handleInput(e, todo.id)}
               onInput={(e) => handleEdit(todo.id, e)}
               style={{
-                textDecoration: todo.isCompleted ? "line-through" : "none",
+                textDecoration: todo.isCompleted ? 'line-through' : 'none',
               }}
             />
             <InputRightAddon>
@@ -107,7 +108,7 @@ function Todo() {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default Todo;
+export default Todo

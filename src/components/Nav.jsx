@@ -1,12 +1,15 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
-
+import { Link } from 'react-router-dom'
+import { Link as ChakraLink } from '@chakra-ui/react'
 function Nav() {
   return (
-    <nav className='nav-bar'>
-        <NavLink to='posts'>Home</NavLink>
-        <NavLink to="add">Add</NavLink>
-        <NavLink to="update">Update</NavLink>
+    <nav className="nav-bar">
+      <ChakraLink>
+        <Link to="/">
+          Home   
+          <i className="fa-solid fa-house-user"></i>
+        </Link>
+      </ChakraLink>
     </nav>
   )
 }
